@@ -1,0 +1,42 @@
+doctype 5
+html
+  head
+    title= 'Chat'
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    script(src='/socket.io/socket.io.js')
+    script(src='//code.jquery.com/jquery-1.11.1.js')
+  body
+    center
+      div
+        button.btn.btn-info(type='button') Chat Room
+      div#logWrap
+        texarea#chatLog.form-control(readonly='')
+      form#chat
+        input#name.form-control(type='text')
+        input#message.form-control(type='text')
+        button.btn.btn-primary(type='submit') SEND
+      #box.box
+
+      script.
+        var socket = io();
+
+        $('#chat').on('submit', function(e) {
+          socket.emit('send message', $('#name').val(), $('#message').val());
+          $('#message').val('');
+          $('#message').focus();
+          e.preventDefault();
+        });
+
+        socket.on('create name', function(name) {
+          $('#name').val(name);
+        });
+
+        socket.on('receive message', function(msg) {
+          $('#chatLog').append(msg+'<br>');
+          var elem = document.getElementById('logWrap');
+          elem.scrollTop = elem.scrollHeight;
+        });
+
+
+
+      
