@@ -27,11 +27,17 @@ html
           e.preventDefault();
         });
 
+        $('#name').change(function(e) {
+          socket.emit('change name', e.target.value);
+          console.log('a');
+        });
+
         socket.on('create name', function(name) {
           $('#name').val(name);
         });
 
         socket.on('receive message', function(msg) {
+          console.log(msg);
           $('#chatLog').append(msg+'<br>');
           var elem = document.getElementById('logWrap');
           elem.scrollTop = elem.scrollHeight;
