@@ -16,6 +16,9 @@ html
         input#message.form-control(type='text')
         button.btn.btn-primary(type='submit') SEND
       #box.box
+    div#usersList
+      ul#usersListUl
+
 
       script.
         var socket = io();
@@ -43,6 +46,13 @@ html
           elem.scrollTop = elem.scrollHeight;
         });
 
-
+        socket.on('receive list', function(list) {
+          console.log('list',list);
+          //- $('#usersListUl').enmpty();
+          document.getElementById('usersListUl').innerHTML = '';
+          for(var i=0; i<list.length; i++) {
+            $('#usersListUl').append(`<li>${list[i]}</li>`);
+          }
+        })
 
       
